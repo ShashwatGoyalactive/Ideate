@@ -9,12 +9,21 @@
     "dev": "tsc -b && node dist/index.js"
   },
   "dependencies": {
-    "@repo/typescript-config": "workspace:*",
-    "@types/express": "^5.0.3",
-    "express": "^5.1.0"
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "zod": "^4.1.12"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs"
+  "type": "commonjs",
+  "devDependencies": {
+    "@repo/typescript-config": "workspace:*",
+    "@types/express": "^5.0.3",
+    "@types/cors": "^2.8.19",
+    "@types/jsonwebtoken": "^9.0.10",
+    "jsonwebtoken": "^9.0.2",
+    "@repo/backend-common": "workspace:*"
+  }
 }
