@@ -2,7 +2,7 @@ import { Router, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import {SignInSchema , SignUpSchema } from '@repo/common/zod';
 import { prismaClient } from '@repo/db/client';
-
+import { JWT_SECRET } from "@repo/backend-common/config";
 const router: Router = Router();
 
 
@@ -17,7 +17,7 @@ router.post("/signup", async (req: Request, res: Response) => {
       email,
       password,
     });
-    if (!data) {
+    if (!data.success) {
       return res.status(411).json({ message: "Invalid Data" });
     }
 
@@ -37,7 +37,7 @@ router.post("/signup", async (req: Request, res: Response) => {
 
     const token = jwt.sign({
         id : user.id
-    }, process.env.JWT_SECRET as string);
+    }, JWT_SECRET);
 
 
     res.status(200).cookie("token", token).json({message:  "Signed up successfully", token});
@@ -49,7 +49,7 @@ router.post("/signup", async (req: Request, res: Response) => {
 });
 
 
-router.post("/signin", (req: Request, res: Response) => {
+router.post("/signin", async (req: Request, res: Response) => {
     const {email , password} = req.body;
 
     try {
@@ -62,7 +62,7 @@ router.post("/signin", (req: Request, res: Response) => {
         return res.status(411).json({message : "Invalid Data"});
       }
 
-      const user = prismaClient.user.findUnique({
+      const user = await  prismaClient.user.findUnique({
         where : {
             email
         }
@@ -73,8 +73,8 @@ router.post("/signin", (req: Request, res: Response) => {
       }
 
       const token = jwt.sign({
-        id : user.id
-      }, process.env.JWT_SECRET as string);
+        id : user?.id
+      },JWT_SECRET);
 
       res.status(200).cookie("token", token).json({message : "Signed in successfully", token});
 
