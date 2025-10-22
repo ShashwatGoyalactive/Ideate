@@ -1,25 +1,18 @@
 import { Router, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import zod from "zod";
+import {SignInSchema , SignUpSchema } from '@repo/common/zod';
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
 const router: Router = Router();
 
-const signupBodySchema = zod.object({
-  firstName: zod.string().min(3),
-  lastName: zod.string(),
-  userName: zod.string().min(3),
-  email: zod.email(),
-  password: zod.string().min(8),
-});
 
 router.post("/signup", async (req: Request, res: Response) => {
   const { firstName, lastName, userName, email, password } = req.body;
 
   try {
-    const data = signupBodySchema.safeParse({
+    const data = SignUpSchema.safeParse({
       firstName,
       lastName,
       userName,
@@ -57,16 +50,12 @@ router.post("/signup", async (req: Request, res: Response) => {
   }
 });
 
-const signinBodySchema = zod.object({
-  email: zod.email(),
-  password: zod.string().min(8),
-});
 
 router.post("/signin", (req: Request, res: Response) => {
     const {email , password} = req.body;
 
     try {
-      const data = signinBodySchema.safeParse({
+      const data = SignInSchema.safeParse({
         email,
         password,
       })  
