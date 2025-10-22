@@ -3,7 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import {router} from './routes/index.route';
 import  cookieParser  from 'cookie-parser';
-// 1 :43 :50
+// 1 :27
 
 
 dotenv.config();

@@ -4,10 +4,23 @@ import { prismaClient } from "@repo/db/client";
 
 const router: Router = Router();
 
-router.get("/chat", (req: Request, res: Response) => {
-  const roomId = req.query.roomId;
+router.get("/:roomId", (req: Request, res: Response) => {
+  const roomId = Number(req.params.roomId);
   try {
-  } catch (error) {}
+    const messages = prismaClient.chat.findMany({
+      where: {
+        roomId : roomId
+      },
+      orderBy : {
+        id : "desc"
+      },
+      take : 50
+    })
+
+    res.json({messages})
+  } catch (error) {
+    res.status(403).json({message : error})
+  }
 });
 
 router.post(
