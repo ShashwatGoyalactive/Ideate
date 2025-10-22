@@ -1,8 +1,7 @@
 import { Router, Request, Response } from "express";
 import { userMiddleware } from "../auth";
-import { PrismaClient } from "@prisma/client";
+import { prismaClient } from "@repo/db/client";
 
-const prisma = new PrismaClient();
 
 const router: Router = Router();
 
@@ -15,7 +14,7 @@ router.post(
     const userId = req.user?.id;
 
     try {
-      const room = await prisma.Room.create({});
+      const room = await prismaClient.room.create({});
       if (!room) {
         return res.status(500).json({ message: "Room creation failed" });
       }

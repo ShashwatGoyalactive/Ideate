@@ -1,9 +1,7 @@
 import { Router, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import {SignInSchema , SignUpSchema } from '@repo/common/zod';
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { prismaClient } from '@repo/db/client';
 
 const router: Router = Router();
 
@@ -23,7 +21,7 @@ router.post("/signup", async (req: Request, res: Response) => {
       return res.status(411).json({ message: "Invalid Data" });
     }
 
-    const user = await prisma.User.create({
+    const user = await prismaClient.user.create({
       data: {
         firstName,
         lastName,
@@ -64,7 +62,7 @@ router.post("/signin", (req: Request, res: Response) => {
         return res.status(411).json({message : "Invalid Data"});
       }
 
-      const user = prisma.User.findUnique({
+      const user = prismaClient.user.findUnique({
         where : {
             email
         }
