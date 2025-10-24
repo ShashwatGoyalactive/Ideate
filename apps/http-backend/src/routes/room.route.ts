@@ -1,25 +1,30 @@
 import { Router, Request, Response } from "express";
 import { userMiddleware } from "../auth";
-import { prismaClient } from "@repo/db/client";
+import { prismaClient } from "@repo/db-prisma/client";
 
 const router: Router = Router();
-
-router.get("/:roomId", (req: Request, res: Response) => {
+//TODO add the middleware after the user is authenticated
+router.get("/:roomId", async (req: Request, res: Response) => {
   const roomId = Number(req.params.roomId);
+  if (isNaN(roomId)) {
+    return res
+      .status(400)
+      .json({ message: "Invalid room ID. Must be a number." });
+  }
   try {
-    const messages = prismaClient.chat.findMany({
+    const messages = await prismaClient.chat.findMany({
       where: {
-        roomId : roomId
+        roomId: roomId,
       },
-      orderBy : {
-        id : "desc"
+      orderBy: {
+        id: "desc",
       },
-      take : 50
-    })
-
-    res.json({messages})
+      take: 50,
+    });
+    res.json({ messages });
   } catch (error) {
-    res.status(403).json({message : error})
+    console.error("Failed to fetch messages:", error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 });
 
@@ -53,6 +58,29 @@ router.post(
       res.json({ roomId });
     } catch (error) {
       res.json({ message: error });
+    }
+  }
+);
+
+router.get(
+  "/chat/:slug",
+  async (req: Request, res: Response) => {
+    const slug = req.params.slug;
+
+    try {
+      const room = await prismaClient.room.findFirst({
+        where: {
+          slug: slug,
+        },
+      });
+
+      if (!room) {
+        return res.status(404).json({ message: "Room not found" });
+      }
+
+      res.json({ room});
+    } catch (error) {
+      res.status(500).json({ message: error });
     }
   }
 );

@@ -1,7 +1,7 @@
 import { Router, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import {SignInSchema , SignUpSchema } from '@repo/common/zod';
-import { prismaClient } from '@repo/db/client';
+import { prismaClient } from '@repo/db-prisma/client';
 import { JWT_SECRET } from "@repo/backend-common/config";
 const router: Router = Router();
 

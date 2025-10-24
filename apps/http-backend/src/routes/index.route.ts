@@ -5,5 +5,5 @@ import { roomRouter } from './room.route';
 export const router : Router = Router();
 
 router.use('/user' , userRouter);
-router.use('/chat' , roomRouter );
+router.use('/room' , roomRouter );
 

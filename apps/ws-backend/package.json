@@ -9,9 +9,10 @@
     "dev": "npx tsc -b && node dist/index.js"
   },
   "dependencies": {
-    "ws": "^8.18.3",
+    "@repo/db-prisma": "workspace:*",
+    "dotenv": "^17.2.3",
     "jsonwebtoken": "^9.0.2",
-    "@repo/db" : "workspace:*"
+    "ws": "^8.18.3"
   },
   "keywords": [],
   "author": "",

@@ -1,9 +1,10 @@
+import 'dotenv/config';
 import * as dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
 import {router} from './routes/index.route';
 import  cookieParser  from 'cookie-parser';
-// 1 :27
+// 2 : 33 
 
 
 dotenv.config();

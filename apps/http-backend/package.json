@@ -9,8 +9,8 @@
     "dev": "npx tsc -b && node dist/index.js"
   },
   "dependencies": {
-    "@repo/db": "workspace:*",
     "@types/cookie-parser": "^1.4.9",
+    "@repo/db-prisma": "workspace:*",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
